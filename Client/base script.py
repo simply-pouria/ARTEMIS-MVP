@@ -7,6 +7,7 @@ from plyer import notification
 
 
 
+
 def is_almost_similar(integer_1,integer_2):
     
     min = integer_1 * 0.8
@@ -18,6 +19,7 @@ def is_almost_similar(integer_1,integer_2):
         return False
     else:
         print('something went wrong in is_almost_similar function')  
+    
     
     
     
@@ -35,6 +37,7 @@ def have_similar_extensions(path_1,path_2):
         print('something went wrong in has_similar_extensions function')      
         
      
+     
         
 def have_similar_sizes(path_1,path_2):
     
@@ -42,6 +45,7 @@ def have_similar_sizes(path_1,path_2):
     size_2 = os.path.getsize(path_2)
     
     return is_almost_similar(size_1,size_2)
+
 
 
 
@@ -55,6 +59,7 @@ def is_potentially_the_same(path_1,path_2):
         print('something went wrong in is_potentially_the_same function')
      
      
+     
         
 def sending(statement):     
     if statement:
@@ -64,6 +69,7 @@ def sending(statement):
         
     else:
         return 'something went wrong in sending function'
+        
         
         
        
@@ -82,12 +88,15 @@ _2_list = os.listdir('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\secon
 file_1 = str(_1_list[0])
 file_2 = str(_2_list[0])
 
+
        
 def on_click (icon,item):
     if str(item) == 'Compare':
         notifyMe(sending(is_potentially_the_same('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\_first file/'+ file_1 , 'F:\karsooq\step 2\ARTEMIS\Client\comparing directory\second file/'+ file_2)))
     elif str(item) == 'Exit':
         icon.stop()
+        
+        
         
 icon_image = PIL.Image.open('F:\karsooq\step 2\ARTEMIS\Client/artemis logo.png')   
 tray = pystray.Icon ('ARTEMIS CLIENT MVP' , icon_image , menu=pystray.Menu(pystray.MenuItem('Compare',on_click),pystray.MenuItem('Exit',on_click)))
