@@ -3,6 +3,7 @@ from os import listdir
 from os.path import isfile, join
 import pystray
 import PIL.Image
+from plyer import notification
 
 
 
@@ -57,12 +58,22 @@ def is_potentially_the_same(path_1,path_2):
         
 def sending(statement):     
     if statement:
-        print('client sends these two files to our servers')
+        return 'client sends these two files to our servers'
     elif not statement:
-        print('we already know that these files are not the same so there is no need to send them to our servers')
+        return 'we already know that these files are not the same so there is no need to send them to our servers'
         
     else:
-        print('something went wrong in sending function')
+        return 'something went wrong in sending function'
+        
+        
+       
+def notifyMe(message):
+    notification.notify(
+        title = 'ARTEMIS Client',
+        message = message,
+        app_icon = None, 
+        timeout = 10,
+    )
         
         
 
@@ -70,20 +81,16 @@ _1_list = os.listdir('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\_firs
 _2_list = os.listdir('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\second file')
 file_1 = str(_1_list[0])
 file_2 = str(_2_list[0])
-       
-       
+
        
 def on_click (icon,item):
     if str(item) == 'Compare':
-        sending(is_potentially_the_same('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\_first file/'+ file_1 , 'F:\karsooq\step 2\ARTEMIS\Client\comparing directory\second file/'+ file_2))
+        notifyMe(sending(is_potentially_the_same('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\_first file/'+ file_1 , 'F:\karsooq\step 2\ARTEMIS\Client\comparing directory\second file/'+ file_2)))
     elif str(item) == 'Exit':
         icon.stop()
         
-        
-        
-tray_icon_image = PIL.Image.open('F:\karsooq\step 2\ARTEMIS\Client/artemis logo.png') 
-   
-tray = pystray.Icon ('ARTEMIS CLIENT MVP' , tray_icon_image , menu=pystray.Menu(pystray.MenuItem('Compare',on_click),pystray.MenuItem('Exit',on_click)))
+icon_image = PIL.Image.open('F:\karsooq\step 2\ARTEMIS\Client/artemis logo.png')   
+tray = pystray.Icon ('ARTEMIS CLIENT MVP' , icon_image , menu=pystray.Menu(pystray.MenuItem('Compare',on_click),pystray.MenuItem('Exit',on_click)))
 tray.run()
 
 
