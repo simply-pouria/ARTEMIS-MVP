@@ -7,7 +7,6 @@ from plyer import notification
 
 
 
-
 def is_almost_similar(integer_1,integer_2):
     
     min = integer_1 * 0.8
@@ -83,8 +82,8 @@ def notifyMe(message):
         
         
 
-_1_list = os.listdir('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\_first file')
-_2_list = os.listdir('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\second file')
+_1_list = os.listdir(os.path.dirname(__file__)+'\comparing directory/_first file')
+_2_list = os.listdir(os.path.dirname(__file__)+'\comparing directory/second file')
 file_1 = str(_1_list[0])
 file_2 = str(_2_list[0])
 
@@ -92,15 +91,16 @@ file_2 = str(_2_list[0])
        
 def on_click (icon,item):
     if str(item) == 'Compare':
-        notifyMe(sending(is_potentially_the_same('F:\karsooq\step 2\ARTEMIS\Client\comparing directory\_first file/'+ file_1 , 'F:\karsooq\step 2\ARTEMIS\Client\comparing directory\second file/'+ file_2)))
+        notifyMe(sending(is_potentially_the_same(os.path.dirname(__file__)+'\comparing directory\_first file/'+ file_1 , os.path.dirname(__file__)+'\comparing directory/second file/'+ file_2)))
     elif str(item) == 'Exit':
         icon.stop()
         
         
         
-icon_image = PIL.Image.open('F:\karsooq\step 2\ARTEMIS\Client/artemis logo.png')   
+icon_image = PIL.Image.open(os.path.dirname(__file__)+'/_artemis logo.png')   
 tray = pystray.Icon ('ARTEMIS CLIENT MVP' , icon_image , menu=pystray.Menu(pystray.MenuItem('Compare',on_click),pystray.MenuItem('Exit',on_click)))
 tray.run()
+
 
 
 
