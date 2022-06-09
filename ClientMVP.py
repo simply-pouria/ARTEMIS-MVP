@@ -4,7 +4,7 @@ from os.path import isfile, join
 import pystray
 import PIL.Image
 from plyer import notification
-
+import hashlib
 
 
 def is_almost_similar(integer_1,integer_2):
@@ -56,15 +56,26 @@ def is_potentially_the_same(path_1,path_2):
         return False
     else:
         print('something went wrong in is_potentially_the_same function')
-     
-     
+        
+        
+        
+def md5(path):
+    hash_md5 = hashlib.md5()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(4096), b""):
+            hash_md5.update(chunk)
+    return hash_md5.hexdigest()
+
      
         
 def sending(statement):     
     if statement:
-        return 'client sends these two files to our servers'
+        f1_checksum = str(md5(os.path.dirname(__file__)+'\comparing directory\_first file/'+ file_1))
+        f2_checksum = str(md5(os.path.dirname(__file__)+'\comparing directory/second file/'+ file_2))
+        
+        return 'file 1: ' + f1_checksum + '\n' + 'file 2: ' + f2_checksum
     elif not statement:
-        return 'we already know that these files are not the same so there is no need to send them to our servers'
+        return 'we already know that these files are not the same so there is no need to convert them to checksum code and send them to our servers'
         
     else:
         return 'something went wrong in sending function'
