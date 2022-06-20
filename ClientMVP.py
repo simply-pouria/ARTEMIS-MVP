@@ -1,3 +1,4 @@
+import json
 import os
 from os import listdir
 from os.path import isfile, join
@@ -5,6 +6,14 @@ import pystray
 import PIL.Image
 from plyer import notification
 import hashlib
+import socket
+import json
+
+_in = None
+host = '192.168.56.1'
+port = 9090
+socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+socket.connect((host,port))
 
 
 def is_almost_similar(integer_1,integer_2):
@@ -72,8 +81,13 @@ def sending(statement):
     if statement:
         f1_checksum = str(md5(os.path.dirname(__file__)+'\comparing directory\_first file/'+ file_1))
         f2_checksum = str(md5(os.path.dirname(__file__)+'\comparing directory/second file/'+ file_2))
-        
-        return 'file 1: ' + f1_checksum + '\n' + 'file 2: ' + f2_checksum
+        _out = 'file 1: ' + f1_checksum + '\n' + 'file 2: ' + f2_checksum + '\n' + 'sending checksum codes to server...'
+        msg = json.dumps({f1_checksum : f2_checksum})  
+        socket.send(msg.encode('utf-8'))
+        global _in
+        _in = socket.recv(1024).decode('utf-8')
+        return _out
+
     elif not statement:
         return 'we already know that these files are not the same so there is no need to convert them to checksum code and send them to our servers'
         
@@ -90,6 +104,8 @@ def notifyMe(message):
         app_icon = None, 
         timeout = 10,
     )
+
+
         
         
 
@@ -103,6 +119,7 @@ file_2 = str(_2_list[0])
 def on_click (icon,item):
     if str(item) == 'Compare':
         notifyMe(sending(is_potentially_the_same(os.path.dirname(__file__)+'\comparing directory\_first file/'+ file_1 , os.path.dirname(__file__)+'\comparing directory/second file/'+ file_2)))
+        notifyMe(_in)
     elif str(item) == 'Exit':
         icon.stop()
         
