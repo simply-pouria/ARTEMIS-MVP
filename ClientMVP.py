@@ -1,16 +1,10 @@
-import json
-import os
-from os import listdir
-from os.path import isfile, join
-import pystray
+import json, os , pystray, hashlib, socket, json, time
 import PIL.Image
 from plyer import notification
-import hashlib
-import socket
-import json
+
 
 _in = None
-host = '192.168.56.1'
+host = '192.168.1.54'
 port = 9090
 socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 socket.connect((host,port))
@@ -89,7 +83,7 @@ def sending(statement):
         return _out
 
     elif not statement:
-        return 'we already know that these files are not the same so there is no need to convert them to checksum code and send them to our servers'
+        return 'we already know that these files are not the same so there is no need to convert them to checksum code and send them to our servers, we will keep the files'
         
     else:
         return 'something went wrong in sending function'
@@ -119,7 +113,16 @@ file_2 = str(_2_list[0])
 def on_click (icon,item):
     if str(item) == 'Compare':
         notifyMe(sending(is_potentially_the_same(os.path.dirname(__file__)+'\comparing directory\_first file/'+ file_1 , os.path.dirname(__file__)+'\comparing directory/second file/'+ file_2)))
-        notifyMe(_in)
+        if _in == 'True':
+            time.sleep(1)
+            notifyMe('files are the same, we will delete one of them')
+            os.remove(os.path.dirname(__file__)+'\comparing directory\_first file/'+ file_1)
+
+        elif _in == 'False':
+            notifyMe('files are not the same, we will keep them')
+            
+            
+
     elif str(item) == 'Exit':
         icon.stop()
         

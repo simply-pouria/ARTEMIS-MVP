@@ -1,7 +1,7 @@
-import socket
-import json
+import socket, json
 
-host = '192.168.56.1'
+
+host = '192.168.1.54'
 port = 9090
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((host , port))
@@ -13,9 +13,9 @@ def compare(msg):
     f1_checksum = key[0]
     f2_checksum = message[f1_checksum]
     if f1_checksum == f2_checksum:
-        return 'files are the same'
+        return 'True'
     else:
-        return 'files are not the same'
+        return 'False'
 while True:
     communication_socket, address = server.accept()
     print(f'connected to {address}')
